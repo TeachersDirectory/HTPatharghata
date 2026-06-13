@@ -583,7 +583,7 @@ function openDeveloperPage(){
     document.getElementById("editPage").style.display = "none";
     document.getElementById("developerPage").style.display = "block";
 
-    history.pushState({page:"developer"}, "", "#developer");
+    location.hash = "developer";
 }
 
 function closeDeveloperPage(){
@@ -592,24 +592,22 @@ function closeDeveloperPage(){
     document.getElementById("developerPage").style.display = "none";
 }
 
-window.addEventListener("popstate", function (event) {
+window.addEventListener("hashchange", function () {
 
-    const page = event.state?.page || "home";
+    const hash = location.hash;
 
-    // সব page hide
     document.querySelector(".header").style.display = "block";
     document.querySelector(".container").style.display = "block";
     document.getElementById("editPage").style.display = "none";
     document.getElementById("developerPage").style.display = "none";
 
-    // state অনুযায়ী show
-    if(page === "edit"){
+    if(hash === "#edit"){
         document.querySelector(".header").style.display = "none";
         document.querySelector(".container").style.display = "none";
         document.getElementById("editPage").style.display = "block";
     }
 
-    if(page === "developer"){
+    if(hash === "#developer"){
         document.querySelector(".header").style.display = "none";
         document.querySelector(".container").style.display = "none";
         document.getElementById("developerPage").style.display = "block";
