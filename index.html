@@ -536,30 +536,27 @@ searchBox.addEventListener("input", () => {
 
 // এডিট পেজ খোলার ফাংশন (স্কুলের নাম সহ ডেটা অটো-ফিল করবে)
 function openEditPage(name, designation, phone) {
+
     let schoolName = "";
     const foundTeacher = teachers.find(t => t[0] === name && t[3] === phone);
+
     if(foundTeacher) {
-        schoolName = foundTeacher[2]; 
+        schoolName = foundTeacher[2];
     }
 
-    // আগের মেইন লিস্ট এবং সার্চ বক্স লুকিয়ে ফেলা
     document.querySelector(".header").style.display = "none";
     document.querySelector(".container").style.display = "none";
-    
-    // নতুন এডিট পেজটি সামনে আনা
+    document.getElementById("developerPage").style.display = "none";
     document.getElementById("editPage").style.display = "block";
-    
-    // ওপরে হেডার বক্সে স্কুলের নাম অটোমেটিক দেখানো
+
     document.getElementById("editSchoolName").innerText = schoolName;
-    
-    // বর্তমান তথ্যগুলো ফরমে অটো-ফিল করে দেওয়া
+
     document.getElementById("targetTeacher").value = name + " (" + schoolName + ")";
     document.getElementById("currName").innerText = name;
     document.getElementById("currDesignation").innerText = designation;
     document.getElementById("currPhone").innerText = phone;
-    
-    // ফোনের ব্যাক বাটনের হিস্টোরি পুশ করা
-    history.pushState({page: "edit"}, "Edit Info");
+
+    history.pushState({page: "edit"}, "", "#edit");
 }
 
 // এডিট পেজ বন্ধ করার ফাংশন
@@ -581,15 +578,12 @@ document.getElementById("editForm").addEventListener("submit", function(e) {
 
 function openDeveloperPage(){
 
-    history.pushState(
-        {page:"developer"},
-        "",
-        "#developer"
-    );
-
     document.querySelector(".header").style.display = "none";
     document.querySelector(".container").style.display = "none";
+    document.getElementById("editPage").style.display = "none";
     document.getElementById("developerPage").style.display = "block";
+
+    history.pushState({page:"developer"}, "", "#developer");
 }
 
 function closeDeveloperPage(){
@@ -598,32 +592,30 @@ function closeDeveloperPage(){
     document.getElementById("developerPage").style.display = "none";
 }
 
-window.addEventListener("popstate", function(){
+window.addEventListener("popstate", function (event) {
 
-    const editPage =
-        document.getElementById("editPage");
+    const page = event.state?.page || "home";
 
-    const developerPage =
-        document.getElementById("developerPage");
+    // সব page hide
+    document.querySelector(".header").style.display = "block";
+    document.querySelector(".container").style.display = "block";
+    document.getElementById("editPage").style.display = "none";
+    document.getElementById("developerPage").style.display = "none";
 
-    if(
-        editPage &&
-        editPage.style.display === "block"
-    ){
-        closeEditPage();
-        return;
+    // state অনুযায়ী show
+    if(page === "edit"){
+        document.querySelector(".header").style.display = "none";
+        document.querySelector(".container").style.display = "none";
+        document.getElementById("editPage").style.display = "block";
     }
 
-    if(
-        developerPage &&
-        developerPage.style.display === "block"
-    ){
-        closeDeveloperPage();
-        return;
+    if(page === "developer"){
+        document.querySelector(".header").style.display = "none";
+        document.querySelector(".container").style.display = "none";
+        document.getElementById("developerPage").style.display = "block";
     }
-
 });
-
+    
 </script>
 
 <div id="developerPage" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#e9ecef;overflow:auto;box-sizing:border-box;z-index: 999;">
