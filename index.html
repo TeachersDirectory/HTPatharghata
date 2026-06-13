@@ -586,6 +586,8 @@ function closeDeveloperPage(){
     document.getElementById("developerPage").style.display = "none";
 }
 
+history.replaceState({page:"home"}, "", location.href);
+    
 window.addEventListener("popstate", function() {
 
     const editPage = document.getElementById("editPage");
