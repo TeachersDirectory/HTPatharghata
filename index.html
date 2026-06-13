@@ -284,6 +284,12 @@ placeholder="নাম বা বিদ্যালয়ের নাম লি
 
 <script>
 
+ history.pushState({page:"home"}, "", "#home");
+
+window.addEventListener("load", function(){
+    history.pushState({page:"home"}, "", "#home");
+});   
+    
 const teachers = [
 
   ["মলয় কান্তি সিকদার", "প্রধান শিক্ষক (ভারপ্রাপ্ত)", "পূর্ব  ঘুটাবাছা সরকারি প্রাথমিক বিদ্যালয়", "01737227007"],
@@ -588,18 +594,19 @@ function closeDeveloperPage(){
 
 history.replaceState({page:"home"}, "", location.href);
     
-window.addEventListener("popstate", function() {
+window.addEventListener("popstate", function(){
 
-    const editPage = document.getElementById("editPage");
-    const developerPage = document.getElementById("developerPage");
-
-    if(editPage && editPage.style.display === "block"){
+    if(document.getElementById("editPage").style.display === "block"){
         closeEditPage();
+
+        history.pushState({page:"home"}, "", "#home");
         return;
     }
 
-    if(developerPage && developerPage.style.display === "block"){
+    if(document.getElementById("developerPage").style.display === "block"){
         closeDeveloperPage();
+
+        history.pushState({page:"home"}, "", "#home");
         return;
     }
 
