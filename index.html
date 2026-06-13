@@ -283,12 +283,6 @@ placeholder="নাম বা বিদ্যালয়ের নাম লি
 </div>
 
 <script>
-
- history.pushState({page:"home"}, "", "#home");
-
-window.addEventListener("load", function(){
-    history.pushState({page:"home"}, "", "#home");
-});   
     
 const teachers = [
 
@@ -455,8 +449,6 @@ function normalize(text){
         .replace(/ঢ়/g, '\u09dd');
 }
 
-history.replaceState({page:"home"}, "", "");
-
 const teacherList = document.getElementById("teacherList");
 const searchBox = document.getElementById("searchBox");
 const noResult = document.getElementById("noResult");
@@ -518,6 +510,16 @@ teacherList.innerHTML += `
 
 renderTeachers(teachers);
 
+window.addEventListener("load", function(){
+
+    history.replaceState(
+        {page:"home"},
+        "",
+        location.href
+    );
+
+});
+
 // keyup এর বদলে input ইভেন্ট ব্যবহার করা হয়েছে যা কপি-পেস্ট করলেও কাজ করবে
 searchBox.addEventListener("input", () => {
     // এখানে সরাসরি ইনপুটকে নরমালাইজ করা হচ্ছে
@@ -578,12 +580,16 @@ document.getElementById("editForm").addEventListener("submit", function(e) {
 });
 
 function openDeveloperPage(){
+
+    history.pushState(
+        {page:"developer"},
+        "",
+        "#developer"
+    );
+
     document.querySelector(".header").style.display = "none";
     document.querySelector(".container").style.display = "none";
     document.getElementById("developerPage").style.display = "block";
-    
-    // ফোনের ব্যাক বাটনের কাজ সচল করা
-    history.pushState({page: "developer"}, "Developer Info");
 }
 
 function closeDeveloperPage(){
@@ -592,26 +598,31 @@ function closeDeveloperPage(){
     document.getElementById("developerPage").style.display = "none";
 }
 
-history.replaceState({page:"home"}, "", location.href);
-    
 window.addEventListener("popstate", function(){
 
-    if(document.getElementById("editPage").style.display === "block"){
-        closeEditPage();
+    const editPage =
+        document.getElementById("editPage");
 
-        history.pushState({page:"home"}, "", "#home");
+    const developerPage =
+        document.getElementById("developerPage");
+
+    if(
+        editPage &&
+        editPage.style.display === "block"
+    ){
+        closeEditPage();
         return;
     }
 
-    if(document.getElementById("developerPage").style.display === "block"){
+    if(
+        developerPage &&
+        developerPage.style.display === "block"
+    ){
         closeDeveloperPage();
-
-        history.pushState({page:"home"}, "", "#home");
         return;
     }
 
 });
-
 
 </script>
 
